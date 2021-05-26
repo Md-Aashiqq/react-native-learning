@@ -1,7 +1,7 @@
 {
-  "extends": "expo/tsconfig.base",
+  "extends": "eslint-config-react-native-wcandillon/tsconfig.base",
   "compilerOptions": {
-   "noEmit": true,
+    "noEmit": true,
     "lib": [
       "dom",
       "esnext"
