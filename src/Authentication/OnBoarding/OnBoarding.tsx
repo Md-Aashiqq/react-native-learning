@@ -1,46 +1,50 @@
 /* eslint-disable prettier/prettier */
-import React from "react"
+import React, { useRef } from "react"
 import { StyleSheet, View, Dimensions } from "react-native";
 import Animated, {
   useAnimatedScrollHandler, useSharedValue,
   useAnimatedStyle,
   interpolateColor,
   useDerivedValue,
-
 } from "react-native-reanimated";
 
+import { Dot } from "../../components"
 
 import Slide, { SLIDE_HEIGHT } from "./Slide";
+import Subslide from "./Subslide";
+
+
 
 const { width } = Dimensions.get("window")
 
 const OnBoarding = () => {
 
   const x = useSharedValue(0);
+  const scrollRef = useRef<Animated.ScrollView>(null);
 
   const slides = [{
     label: "Payfull",
     color: "#BFEAF5",
-    subtitle: "FInds Your Outfits",
-    description: "COnfused about your outfits? Dont Worry"
+    subtitle: "Finds Your Outfits",
+    description: "Confused about your outfits? Dont Worry"
   },
   {
     label: "Enjoy",
     color: "#BEECC4",
-    subtitle: "FInds Your Enjoy",
-    description: "COnfused about your outfits? Dont Worry"
+    subtitle: "Finds Your Enjoy",
+    description: "Confused about your outfits? Dont Worry"
   },
   {
     label: "Relaxed",
     color: "#FFE4D9",
     subtitle: "Finds Your Relaxed",
-    description: "COnfused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry"
   },
   {
     label: "Exportix",
     color: "#FFDDDD",
     subtitle: "Finds Your exportix",
-    description: "COnfused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry"
   }
   ]
 
@@ -65,6 +69,19 @@ const OnBoarding = () => {
 
   const animationStyle = useAnimatedStyle(sharedStyles)
   const animationOverlay = useAnimatedStyle(sharedStyles)
+  const animationFooter = useAnimatedStyle(() => {
+    "worklet";
+    return {
+      width: (width * slides.length),
+      flex: 1,
+      flexDirection: "row",
+      transform: [{
+        translateX: x.value * -1
+      }]
+    }
+  })
+
+
 
   return (
 
@@ -72,6 +89,7 @@ const OnBoarding = () => {
 
       <Animated.View style={[styles.slider, animationStyle]}>
         <Animated.ScrollView horizontal={true}
+          ref={scrollRef}
           decelerationRate="fast" snapToInterval={width} bounces={false} showsHorizontalScrollIndicator={false}
           {...{ scrollHandler }}
         >
@@ -84,11 +102,32 @@ const OnBoarding = () => {
       </Animated.View>
       <View style={styles.footer}>
 
-        <Animated.View style={[styles.overlay, animationOverlay]} />
+        <Animated.View style={[{ ...StyleSheet.absoluteFillObject }, animationOverlay]} />
 
-        <Animated.View style={styles.footerContent}>
+        <View style={styles.footerContent}>
 
-        </Animated.View>
+          <View style={styles.pagination}>
+            {slides.map((_, index) => {
+              return (
+                <Dot key={index} {...{ index }} currentIndex={x} />
+              )
+            })}
+          </View>
+
+          <Animated.View style={[animationFooter]}>
+            {slides.map(({ subtitle, description }, index) => {
+              return (
+                <Subslide onPress={() => {
+                  if (scrollRef.current) {
+
+                    scrollRef.current.scrollTo({ x: width * (index + 1), animated: true })
+                  }
+                }} key={index} last={(index) === (slides.length - 1)} {...{ subtitle, description }} />
+              )
+            })}
+          </Animated.View>
+
+        </View>
 
       </View>
 
@@ -104,17 +143,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white"
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "red"
-  },
   slider: {
     height: SLIDE_HEIGHT,
-    // backgroundColor: "cyan",
     borderBottomRightRadius: 75
   },
   footer: {
+    flex: 1,
+
+  },
+  footerContent: {
+    backgroundColor: "white",
+    borderTopLeftRadius: 75,
     flex: 1
   },
-  footerContent: { flex: 1, backgroundColor: "white", borderTopLeftRadius: 75 }
+  pagination: {
+    ...StyleSheet.absoluteFillObject,
+    height: 75,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  }
 });
