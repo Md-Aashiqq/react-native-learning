@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Dot } from "../../components"
+import { Routes, StackNavigationProps } from "../../components/Navigation";
 
 import Slide, { SLIDE_HEIGHT } from "./Slide";
 import Subslide from "./Subslide";
@@ -17,7 +18,7 @@ import Subslide from "./Subslide";
 
 const { width } = Dimensions.get("window")
 
-const OnBoarding = () => {
+const OnBoarding = ({ navigation }: StackNavigationProps<Routes, "OnBoarding">) => {
 
   const x = useSharedValue(0);
   const scrollRef = useRef<Animated.ScrollView>(null);
@@ -26,25 +27,29 @@ const OnBoarding = () => {
     label: "Payfull",
     color: "#BFEAF5",
     subtitle: "Finds Your Outfits",
-    description: "Confused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry",
+    picture: require("../../../assets/1.png")
   },
   {
     label: "Enjoy",
     color: "#BEECC4",
     subtitle: "Finds Your Enjoy",
-    description: "Confused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry",
+    picture: require("../../../assets/2.png")
   },
   {
     label: "Relaxed",
     color: "#FFE4D9",
     subtitle: "Finds Your Relaxed",
-    description: "Confused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry",
+    picture: require("../../../assets/3.png")
   },
   {
     label: "Exportix",
     color: "#FFDDDD",
     subtitle: "Finds Your exportix",
-    description: "Confused about your outfits? Dont Worry"
+    description: "Confused about your outfits? Dont Worry",
+    picture: require("../../../assets/4.png")
   }
   ]
 
@@ -93,9 +98,9 @@ const OnBoarding = () => {
           decelerationRate="fast" snapToInterval={width} bounces={false} showsHorizontalScrollIndicator={false}
           {...{ scrollHandler }}
         >
-          {slides.map(({ label }, index) => {
+          {slides.map(({ label, picture }, index) => {
             return (
-              <Slide key={index} right={!(index % 2)} {...{ label }} />
+              <Slide key={index} right={!(index % 2)} {...{ label, picture }} />
             )
           })}
         </Animated.ScrollView>
@@ -116,13 +121,16 @@ const OnBoarding = () => {
 
           <Animated.View style={[animationFooter]}>
             {slides.map(({ subtitle, description }, index) => {
+              const last = (index) === (slides.length - 1)
               return (
                 <Subslide onPress={() => {
-                  if (scrollRef.current) {
-
-                    scrollRef.current.scrollTo({ x: width * (index + 1), animated: true })
+                  if (last) {
+                    navigation.navigate("Welcome")
                   }
-                }} key={index} last={(index) === (slides.length - 1)} {...{ subtitle, description }} />
+                  else {
+                    scrollRef.current?.scrollTo({ x: width * (index + 1), animated: true })
+                  }
+                }} key={index}  {...{ subtitle, description, last }} />
               )
             })}
           </Animated.View>

@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React from "react"
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { CustomButton } from "../../components"
+import { Text } from "../../components/Theme";
 
 
 interface SubslideProps {
@@ -15,8 +16,8 @@ interface SubslideProps {
 const Subslide = ({ subtitle, last, description, onPress }: SubslideProps) => {
     return (
         <View style={styles.container} >
-            <Text style={styles.subtitle} >{subtitle}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text variant="title1">{subtitle}</Text>
+            <Text variant="description" >{description}</Text>
             <CustomButton {...{ onPress }}
                 label={last ? "Let's get started" : "Next"} variant={(last ? "primary" : "default")} />
         </View>
@@ -31,18 +32,5 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    subtitle: {
-        fontSize: 24,
-        lineHeight: 30,
-        marginBottom: 6,
-        textAlign: "center",
-        color: "#0c0d34",
-    },
-    description: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: "#0c0d34",
-        textAlign: "center",
-        marginBottom: 20
-    }
+
 })

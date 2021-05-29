@@ -1,24 +1,31 @@
 /* eslint-disable prettier/prettier */
-import React from "react"
+import React, { ReactChild } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
+import { useTheme } from "@shopify/restyle"
 
+import { Theme } from "./Theme"
 interface ButtonProps {
-    label: string,
-    variant: "default" | "primary",
-    onPress: () => void
+    label?: string,
+    variant: "default" | "primary" | "transparent",
+    onPress?: () => void;
+    children?: ReactChild
 }
 
-const CustomButton = ({ label, variant, onPress }: ButtonProps) => {
+const CustomButton = ({ label, variant, onPress, children }: ButtonProps) => {
 
-    const backgroundColor = (variant === "primary") ? "#2cb9b0" : "rgba(12,13,52,0.05)";
-    const color = (variant === "primary") ? "white" : "#0c0d34";
+    const theme = useTheme<Theme>()
+
+    // eslint-disable-next-line no-nested-ternary
+    const backgroundColor = (variant === "primary") ?
+        theme.colors.primary : (variant === "default") ? theme.colors.defaultButton : "transparent";
+    const color = (variant === "primary") ? theme.colors.white : theme.colors.title1Color;
 
     return (
-        <RectButton style={[styles.button, { backgroundColor }]}{...{ onPress }} >
-            <View>
+        <RectButton style={[styles.button, { backgroundColor }]} {...{ onPress }}>
+            {children ? children : <View>
                 <Text style={[styles.buttonLabel, { color }]} >{label}</Text>
-            </View>
+            </View>}
         </RectButton>
     )
 }
@@ -32,7 +39,7 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: "center",
         padding: 10,
-        alignItems: "center"
+        alignItems: "center",
 
     },
     buttonLabel: {

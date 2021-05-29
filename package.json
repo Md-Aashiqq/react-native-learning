@@ -11,9 +11,11 @@
     "ci": "yarn lint && yarn tsc"
   },
   "dependencies": {
+    "@expo/vector-icons": "^12.0.5",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
+    "@shopify/restyle": "^1.4.0",
     "eslint": "^7.27.0",
     "eslint-config-react-native-wcandillon": "^3.6.1",
     "expo": "~41.0.1",
@@ -22,6 +24,7 @@
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-keyboard-aware-scroll-view": "^0.9.4",
     "react-native-reanimated": "^2.0.0-rc.0",
     "react-native-redash": "^16.0.11",
     "react-native-safe-area-context": "^3.2.0",
