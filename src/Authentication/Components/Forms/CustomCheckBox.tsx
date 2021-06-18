@@ -1,20 +1,22 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from "react"
+import React from "react"
 import { Feather as Icon } from "@expo/vector-icons"
 import { RectButton } from "react-native-gesture-handler"
 
-import { CustomButton } from "../../../components"
 import { Box, Text } from "../../../components/Theme"
 
+
 interface customCheckBoxProps {
-    label: string
+    label: string,
+    checked: boolean,
+    onChange: () => void;
 }
 
-const CustomCheckBox = ({ label }: customCheckBoxProps) => {
-    const [checked, setChecked] = useState(false)
+const CustomCheckBox = ({ label, checked, onChange }: customCheckBoxProps) => {
+
     return (
 
-        <RectButton onPress={() => setChecked((c) => !c)} style={{ justifyContent: "center" }}>
+        <RectButton onPress={onChange} style={{ justifyContent: "center" }}>
             <Box flexDirection="row" alignItems="center">
                 <Box marginRight="m" height={20} width={20} borderRadius="s" justifyContent="center"
                     alignItems="center" borderWidth={1} borderColor="primary"
